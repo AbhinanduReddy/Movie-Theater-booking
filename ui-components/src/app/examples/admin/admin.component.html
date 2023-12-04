@@ -1,0 +1,171 @@
+
+<p-toast></p-toast>
+
+<div class="page-header login-page navbar-transparent" filter-color="orange">
+    <div class="page-header-image" style="background-image:url('assets/img/bg_img.jpeg')"></div>
+    <div class="container">
+        <br><br><br><br>
+        <p-tabView >
+            <p-tabPanel header="Movies">
+                
+                <p-table *ngIf="!movieFormDisplay" [value]="movies" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" 
+                [paginator]="true"  [scrollable]="true" scrollHeight="300px" [tableStyle]="{'min-width': '500px'}">
+
+                <ng-template pTemplate="caption">
+                    <div class="caption-wrapper">
+                      <span></span>
+                      <div style="cursor: pointer; "(click)="movieFormAddMovie()">
+                        <i class="custom-button now-ui-icons ui-1_simple-add">Add Movie</i>
+                      </div>
+                    </div>
+                  </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pSortableColumn="movie_name" style="width:22%">Movie Name</th>
+                            <th pSortableColumn="release_date" style="width:22%">Release Date</th>
+                            <th pSortableColumn="booking_started" style="width:22%">Booking Started</th>
+                            <th>Image Url</th>
+                            <th>Operations</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p-columnFilter type="text" field="movie_name"></p-columnFilter>
+                              
+                            </th>     
+                            <th>
+                                <p-columnFilter type="date" field="release_date"></p-columnFilter>
+                            </th> 
+                            <th>
+                                <p-columnFilter type="boolean" field="booking_started"></p-columnFilter>
+                            </th> 
+                            <th>
+                            </th> 
+                            <th><i class="now-ui-icons arrows-1_share-66">Edit    </i><p></p>
+                                <i class="now-ui-icons ui-1_simple-remove">Delete</i></th>
+                                   
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-movie>
+                        <tr>
+                            <td>{{movie.movie_name}}</td>
+                            <td>{{movie.release_date | date: 'mediumDate'}}</td>
+                            <td>{{movie.booking_started}}</td>
+                            <td><img [src]="movie.image_url" width="50px" height="50px"></td>
+                            <td>
+                                <i class="icon now-ui-icons arrows-1_share-66" (click)="EditMovie(movie.movie_id)"></i>
+                                <i class="icon now-ui-icons ui-1_simple-remove" (click)="DeleteMovie(movie.movie_id)"></i>
+                                <i class="icon now-ui-icons shopping_shop" (click)="assignTheater(movie.movie_id)"></i>
+                              </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                    
+                <button *ngIf="!!movieFormDisplay" class="btn btn-primary" style="display: flex !important" (click)="backToMoviesList()">Back to Movies List</button>
+                <form *ngIf="!!movieFormDisplay" [formGroup]="movieFormm" (ngSubmit)="CreateMovie()">
+                    <div class="form-group">
+                      <label for="movie_name">Movie Name</label>
+                      <input formControlName="movie_name" type="text" class="form-control" id="movie_name" placeholder="Enter Movie Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="image_url">Image Url</label>
+                      <input formControlName="image_url" type="text" class="form-control" id="image_url" placeholder="Enter Image Url">
+                    </div>
+                    <div class="form-group">
+                      <label for="desc">Description</label>
+                      <input formControlName="desc" type="text" class="form-control" id="desc" placeholder="Enter Description">
+                    </div>
+                    <div class="form-group">
+                      <label for="release_date_value">Release Date</label>
+                      <input formControlName="release_date_value" type="date" class="form-control" id="release_date_value">
+                    </div>
+                    <div class="form-group">
+                      <label for="booking_started">Booking Started :</label>
+                      <input formControlName="booking_started" type="checkbox" class="form-check-input" id="booking_started">
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{edit?'Edit':'Create'}}</button>
+
+                  </form>                  
+                  <p-dialog [style]="{'width':'1000px','height':'700px'}" header="Assign Screen" [(visible)]="assignTheaterOperation">
+                    <app-assignTheater *ngIf="assignTheaterOperation" [id]="selected_movie_id" [theaters]="theaters"></app-assignTheater>                
+  
+                </p-dialog>
+            </p-tabPanel>
+            <p-tabPanel header="Theaters">
+              <p-table  *ngIf="!theaterDiaplayForm" [value]="theaters" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" 
+              [paginator]="true"  [scrollable]="true" scrollHeight="300px" [tableStyle]="{'min-width': '500px'}">
+
+              <ng-template pTemplate="caption">
+                  <div class="caption-wrapper">
+                    <span></span>
+                    <div style="cursor: pointer; " (click)="theaterFormAddMovie()">
+                      <i class="custom-button now-ui-icons ui-1_simple-add">Add Theater</i>
+                    </div>
+                  </div>
+                </ng-template>
+                  <ng-template pTemplate="header">
+                      <tr>
+                          <th pSortableColumn="theater_name" style="width:22%">Theater Name</th>
+                          <th pSortableColumn="location" style="width:22%">Location</th>
+                          <th >Screens</th>
+                          <th>Movies</th>
+                          <th>Operations</th>
+                      </tr>
+                      <tr>
+                          <th>
+                              <p-columnFilter type="text" field="theater_name"></p-columnFilter>
+                            
+                          </th>     
+                          <th>
+                              <p-columnFilter type="date" field="location"></p-columnFilter>
+                          </th> 
+                          <th>
+                          </th> 
+                          <th>
+                          </th> 
+                          <th><i class="now-ui-icons arrows-1_share-66">Edit    </i><p></p>
+                              <i class="now-ui-icons ui-1_simple-remove">Delete</i></th>
+                                 
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-theater>
+                      <tr>
+                          <td>{{theater.theater_name}}</td>
+                          <td>{{theater.city}}</td>
+                          <td>{{theater.screen_name?theater.screen_name.join(','):"No Screens"}}</td>
+                          <td>{{theater.movies?theater.movies.join(', '):"No Movies"}}</td>
+                          <td>
+                            <i class="icon now-ui-icons arrows-1_share-66" (click)="screen_operations(theater.theater_id)"></i>
+                            <i class="icon now-ui-icons ui-1_simple-remove" (click)="remove_theater(theater.theater_id)"></i>
+                        </td>
+                      </tr>
+                  </ng-template>
+              </p-table>
+                  
+              <button *ngIf="!!theaterDiaplayForm" class="btn btn-primary" style="display: flex !important" (click)="backToTheaterList()">Back to Theater List</button>
+              <form *ngIf="!!theaterDiaplayForm" [formGroup]="theaterForm" (ngSubmit)="CreateTheater()">
+                  <div class="form-group">
+                    <label for="movie_name">Theater Name</label>
+                    <input formControlName="theater_name" type="text" class="form-control" id="theater_name" placeholder="Enter Theater Name">
+                  </div>
+                  <div class="form-group">
+                    <label for="location">Location</label>
+
+                    <p-dropdown formControlName="location" [(ngModel)]="location_th" id="location" [filter]="true" [options]="theaterSvc.location_list" placeholder="Select a City" optionLabel="city"
+                    [showClear]="true" ></p-dropdown>                  
+                  </div>
+                  <button type="submit" class="btn btn-primary">{{editTheater?'Edit':'Create'}}</button>
+
+                </form>  
+                <p-dialog [style]="{'width':'1000px','height':'700px'}" header="Screen" [(visible)]="theaterOperation">
+                  <app-theaterOperation *ngIf="theaterOperation" [id]="selected_theater_id" [screen]="true"></app-theaterOperation>                
+
+              </p-dialog>
+            </p-tabPanel>
+            <p-tabPanel header="Discount">
+                <app-discount></app-discount>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+
+</div>
+

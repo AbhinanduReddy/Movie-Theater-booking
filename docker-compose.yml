@@ -1,0 +1,44 @@
+version: "3"
+services:
+  nginx:
+    depends_on:
+      - nacho-client
+      - nacho-api
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+    ports:
+      - "80:80"
+    image: abhinandu/nginx
+  nacho-api:
+    build:
+      context: ./services/movies
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+      - ./services/movies:/app
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DB_USER=postgres
+      - DB_PWD=Nacho$202
+      - DB_HOST=theaterdb.crsqt5rcxcbn.us-west-1.rds.amazonaws.com
+      - DB_PORT=5432
+      - DB_NAME=movie_theaters_db
+      - TOKEN=nandu
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    image: abhinandu/nacho-api
+  nacho-client:
+    stdin_open: true 
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: ./ui-components
+    volumes:
+      - /app/node_modules
+      - ./ui-components:/app
+    image: abhinandu/nacho-client
+
+      

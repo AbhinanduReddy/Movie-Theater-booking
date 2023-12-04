@@ -1,0 +1,30 @@
+<p-toast></p-toast>
+<form  [formGroup]="assigntheaterForm" (ngSubmit)="assignTheater()">
+    <div class="form-group">
+        <label for="location">Location</label>
+        <p-dropdown formControlName="location" [(ngModel)]="location" id="city" [filter]="true" [options]="theaterSvc.location_list" placeholder="Select a Location" optionLabel="city"
+        [showClear]="true" (onChange)="locationSelected($event)"></p-dropdown>  
+      </div>
+    <div class="form-group">
+      <label for="theater_name">Theater</label>
+      <p-dropdown formControlName="theater_name" [(ngModel)]="theater" id="theater_name" [filter]="true" [options]="theaters" placeholder="Select a Theater" optionLabel="theater_name"
+      [showClear]="true" (onChange)="theaterSelected($event)"></p-dropdown>  
+    </div>
+    <div class="form-group">
+        <label for="screen">Screen </label>
+        <p-dropdown formControlName="screen_name" [(ngModel)]="screen" id="screen_id" [filter]="true" [options]="screens" placeholder="Select a screen" optionLabel="screen_name"
+        [showClear]="true" (onChange)="screenSelected($event)" ></p-dropdown>  
+      </div>
+      <div class="form-group">
+        <label for="show_times">Available Show Times</label>
+        <p-multiSelect formControlName="show_times" [options]="available_show_times?.map(formatTimeDisplay)" [(ngModel)]="show_times" defaultLabel="Select Show times"  display="chip"></p-multiSelect>
+
+      </div>
+      <div class="form-group">
+        <label for="cost">Cost</label>
+        <input formControlName="cost" type="text" class="form-control" id="cost" placeholder="Enter Cost in Dollars">
+      </div>
+    
+    <button type="submit" class="btn btn-primary">Assign</button>
+
+  </form> 

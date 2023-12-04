@@ -1,0 +1,94 @@
+<p-toast></p-toast>
+<div *ngIf="screen">
+    <p-tabView (onChange)="handleChange($event)">
+
+        <p-tabPanel header="Add New Screen">
+            <form [formGroup]="newcreenForm" (ngSubmit)="newScreen()">
+                <div class="form-group">
+                    <label for="screen_name">Screen Name</label>
+                    <input formControlName="screen_name" type="text" class="form-control" id="screen_name"
+                        placeholder="Enter Screen Name">
+                </div>
+                <div class="form-group">
+                    <label for="rows">Rows</label>
+                    <input formControlName="rows" type="text" class="form-control" id="rows"
+                        placeholder="Enter Number of Rows">
+                </div>
+                <div class="form-group">
+                    <label for="columns">columns</label>
+                    <input formControlName="columns" type="text" class="form-control" id="columns"
+                        placeholder="Enter Number of Columns">
+                </div>
+                <div style="display: flex;" class="form-group">
+                    <label for="show_times">Show times</label>
+                    <div *ngFor="let timeControl of newcreenForm.controls.showTimes.controls; let i = index">
+                        <p-calendar [formControl]="timeControl" [id]="'time_' + i" [inputStyleClass]="'form-control'"
+                            [placeholder]="'Enter Time ' + (i + 1)" timeOnly="true"></p-calendar>
+                    </div>
+                    <button type="button" (click)="addTimeInput()">+</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+
+            </form>
+        </p-tabPanel>
+        <p-tabPanel header="Edit Screen">
+
+            <form [formGroup]="editscreenform" (ngSubmit)="editScreen()">
+                <div class="form-group">
+                    <label for="screens">Screens</label>
+                    <p-dropdown formControlName="screen_name" id="screens" [(ngModel)]="ss"
+                        (onChange)="populateScreen($event)" [filter]="true" [options]="screens"
+                        placeholder="Select a screen" optionLabel="screen_name" [showClear]="true"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label for="screen_name">Screen Name</label>
+                    <input formControlName="screen_name" type="text" class="form-control" id="screen_name"
+                        placeholder="Enter Screen Name">
+                </div>
+                <div class="form-group">
+                    <label for="rows">Rows</label>
+                    <input formControlName="rows" type="text" class="form-control" id="rows"
+                        placeholder="Enter Number of Rows">
+                </div>
+                <div class="form-group">
+                    <label for="columns">columns</label>
+                    <input formControlName="columns" type="text" class="form-control" id="columns"
+                        placeholder="Enter Number of Columns">
+                </div>
+                <div style="display: flex;" class="form-group">
+                    <label for="show_times">Show times</label>
+                    <div *ngFor="let timeControl of editscreenform.controls.showTimes.controls; let i = index">
+                        <p-calendar [formControl]="timeControl" [id]="'time_' + i" [inputStyleClass]="'form-control'"
+                            [placeholder]="'Enter Time ' + (i + 1)" timeOnly="true"></p-calendar>
+                        <button type="button" (click)="removeTimeInput(i)">-</button>
+                    </div>
+                    <button type="button" (click)="addEditTimeInput()">+</button>
+                </div>
+                <button type="submit" class="btn btn-primary">Edit</button>
+
+            </form>
+        </p-tabPanel>
+        <p-tabPanel header="Remove Show Times">
+
+            <form [formGroup]="removeshowtime" (ngSubmit)="removeShows()">
+                <div class="form-group">
+                    <label for="screens">Screens</label>
+                    <p-dropdown formControlName="screen_name" id="screens" [(ngModel)]="sss"
+                        (onChange)="getBlockedShowTimes($event)" [filter]="true" [options]="screens"
+                        placeholder="Select a screen" optionLabel="screen_name" [showClear]="true"></p-dropdown>
+                </div>
+                <div class="form-group">
+                    <label for="blocked_show_times_form">Available Show Times</label>
+                    <p-multiSelect formControlName="blocked_show_times_form" [options]="blocked_show_times?.map(formatTimeDisplay)" [(ngModel)]="show_times" defaultLabel="Select Show times"  display="chip"></p-multiSelect>
+            
+                  </div>
+                
+                <button type="submit" class="btn btn-primary">Delete</button>
+
+            </form>
+        </p-tabPanel>
+    </p-tabView>
+
+
+</div>
+

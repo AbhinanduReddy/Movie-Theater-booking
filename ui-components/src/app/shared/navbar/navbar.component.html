@@ -1,0 +1,145 @@
+
+<nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent" color-on-scroll="500">
+    <i class="now-ui-icons location_pin" style="cursor: pointer;color: white;" (click)="showDisplay()">{{loc}}</i>
+    <p-dialog [style]="{'width':'700px','height':'400px'}" header="Locations" [(visible)]="display">
+        <p-dropdown [style]="{'width':'100%'}"[filter]="true" [options]="loc_list" [(ngModel)]="loc" placeholder="Select a City" optionLabel="city"
+	[showClear]="true" (onChange)="locationSelected($event)"></p-dropdown>
+    </p-dialog>
+    <p-dialog [style]="{'width':'700px','height':'400px'}" header="Premium Payment" [(visible)]="displayPremium">
+        <ul class="list">
+            <li>
+              <span class="label">
+                Premium Cost:</span>
+              <span class="value">$15</span>
+              <li>
+                <a  class="nav-link btn btn-neutral"  (click)="pay()">Pay</a>
+              </li>
+            </ul>
+    </p-dialog>
+    <p-dialog [style]="{'width':'700px'}" header="Transaction History" [(visible)]="displayTransactions" class="custom-dialog">
+      <ng-template pTemplate="content">
+        <div *ngIf="transactions && transactions.length > 0; else noHistoryTemplate">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Movie</th>
+                <th>Theater</th>
+                <th>Rewards Used</th>
+                <th>Show Time</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let transaction of transactions">
+                <td>{{ transaction.movie_name }}</td>
+                <td>{{ transaction.theater_name }}</td>
+                <td>{{ transaction.rewards_used }}</td>
+                <td>{{ transaction.show_time | date:'medium' }}</td>
+                <td>${{ transaction.total_cost | number:'1.2-2' }}</td>
+                <td><button pButton style="background-color: red;" type="button" label="Cancel" (click)="cancelBooking(transaction.ticket_id)"></button></td>
+
+              </tr>
+              <!-- <tr *ngFor="let transaction of transactions">
+                <td>{{ transaction.movie_name }}</td>
+                <td>{{ transaction.theater_name }}</td>
+                <td>{{ transaction.rewards_used }}</td>
+                <td>{{ transaction.show_time | date:'medium' }}</td>
+                <td>${{ transaction.total_cost | number:'1.2-2' }}</td>
+                Add a Cancel Button 
+                <td><button pButton type="button" label="Cancel" (click)="cancelBooking(transaction.ticket_id)"></button></td>
+            </tr>-->
+            
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noHistoryTemplate>
+          <p>No history available.</p>
+        </ng-template>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button type="button" pButton label="Close" (click)="displayTransactions=false"></button>
+      </ng-template>
+    </p-dialog>
+    
+    
+    <div class="container">
+
+        <div class="navbar-translate">
+            <a class="navbar-brand" [routerLink]="['/index']" placement="bottom">
+                Nacho
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+            </button>
+           
+        </div>
+        <div class="collapse navbar-collapse" data-nav-image="" data-color="">
+            <ul class="navbar-nav ml-auto">
+              <li *ngIf="!auth.loggedin" class="nav-item">
+                  <a class="nav-link" routerLink="/login">
+                      <i class="now-ui-icons users_circle-08"></i>
+                      <p>Sign In</p>
+                  </a>
+              </li>
+            
+                <li *ngIf="!!auth.loggedin && (auth.user?.role!='premium' || auth.user?.role!='admin')" class="nav-item">
+                    <a class="nav-link btn btn-neutral" (click)="upgrade()">
+                        <i class="now-ui-icons arrows-1_share-66"></i>
+                        <p>Upgrade to Premium</p>
+                    </a>
+                </li>
+                <li *ngIf="!!auth.loggedin && auth.user?.role=='admin'" class="nav-item">
+                    <a class="nav-link btn btn-neutral" routerLink="/admin">
+                        <i class="now-ui-icons arrows-1_share-66"></i>
+                        <p>Admin</p>
+                    </a>
+                </li>
+                <li *ngIf="!!auth.loggedin" class="nav-item">
+                  <a class="nav-link " (click)="openTransactionHistory()" >
+                      <i class="now-ui-icons business_money-coins"></i>     
+                      <p>History</p>
+                  </a>
+              </li>
+        
+                
+                <li *ngIf="!!auth.loggedin" class="nav-item">
+                    <a class="nav-link profile" (click)="op.toggle($event)">
+                        <i class="now-ui-icons users_circle-08"></i>
+                        <p>{{auth.user.username}}</p>
+                    </a>
+                   
+                </li> 
+                <p-overlayPanel [style]="{'background-color':'#810808','color':'white'}" #op>
+                    <ng-template pTemplate>
+                        <ul class="list">
+                            <li>
+                              <span class="label"><i class="now-ui-icons ui-1_email-85"></i>
+                                Email:</span>
+                              <span class="value">{{auth.user.email}}</span>
+                            </li>
+                            <li>
+                              <span class="label"><i class="now-ui-icons clothes_tie-bow"></i>Membership:</span>
+                              <span class="value">{{auth.user.role}}</span>
+                            </li>
+                            <li>
+                              <span class="label"><i class="now-ui-icons business_money-coins"></i>Rewards:</span>
+                              <span class="value">{{auth.user.rewards}}</span>
+                            </li>
+                            
+                            
+                            <li>
+                              <a (click)="logout()" class="nav-link btn btn-neutral"  target="_blank">Logout</a>
+                            </li>
+                          </ul>
+                          
+                          
+                    </ng-template>
+                </p-overlayPanel>
+            </ul>
+        </div>
+    </div>
+</nav>

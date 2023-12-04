@@ -1,0 +1,16 @@
+psql -U postgres -h localhost -d movie_theaters_db
+
+psql -h theaterdb.crsqt5rcxcbn.us-west-1.rds.amazonaws.com -p 5432 -U postgres -d movie_theaters_db -W
+Nacho$202
+
+
+docker tag team-project-nacho-nacho-api abhinandu/nacho-api
+
+
+docker-compose push
+docker-compose pull
+
+
+nginx -s reload
+
+docker-compose up -d

@@ -1,0 +1,49 @@
+
+<div class="page-header login-page navbar-transparent" filter-color="orange">
+    <div class="page-header-image" style="background-image:url('assets/img/bg_img.jpeg')"></div>
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <div class="container mt-5" >
+            <h1 class="col-22 mb-4">SHOWTIMES</h1>
+            <h3 class="col-auto">FOR {{ selectedDate | date:'fullDate' | uppercase }}</h3>          
+            <div class="col-md-12">
+                <div class="card date-card">
+                  <div class="card-header">
+                    Dates
+                  </div>
+                  <div class="card-body" style=" background-color: black;">
+                    <div class="dates d-flex justify-content-center flex-wrap">
+                      <div *ngFor="let date of dates" class="date-box m-2"
+                           [ngClass]="{'bg-primary text-white':  isDateSelected(date)}"
+                           (click)="selectDate(date)"  style="background-color: rgb(20, 20, 20); color: white">
+                        {{ getFormattedDate(date) }}
+                      </div>
+                    </div>
+                  </div>
+                    <div  >
+                    <div class="show_times d-flex justify-content-center flex-wrap">
+                      <div *ngFor="let st of show_times" class="date-box m-2" 
+                           (click)="selectShowTime(st)" style="background-color: rgb(255, 135, 6); color: white">
+                           {{ st.show_time | date: 'h:mm a' }} Screen: {{st.screen_name}}
+                      </div>
+                    </div>
+                    </div>
+                
+                
+
+                 <!-- <div class="card-container mt-5">
+                    <p-card  *ngFor="let st of show_times" (click)="selectShowTime(st)">
+                        <ng-template pTemplate="content">
+                            
+                          {{ st.show_time | date: 'h:mm a' }}
+                        </ng-template>
+                      </p-card>
+                      </div>-->
+
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,109 @@
+
+<div class="page-header login-page navbar-transparent" filter-color="orange">
+  <div class="page-header-image"></div>
+  <p-dialog [style]="{'width':'700px','height':'400px'}" header="Payment Gateway" [(visible)]="display" >
+      <ul class="list-pay">
+          <li>
+            <span class="label-pay">
+              Seats:</span>
+            <span class="value">{{selectedSeats.join(', ')}}</span>
+          </li>
+          <li *ngIf="auth.user?.rewards>0">
+              <span class="label-pay">Use Rewards Points</span>
+              <span class="value"><p-checkbox (onChange)="checkboxselection($event)"name="groupname" value="rewardpoints" [(ngModel)]="selectedValues" ></p-checkbox>${{auth.user?.rewards}}
+              </span>
+            </li>
+          <li>
+            <span class="label-pay">Total Cost:</span>
+            <span class="value">${{total}}</span>
+          </li>
+          <li>
+            <a  class="nav-link btn btn-neutral"  target="_blank" (click)="Pay()">Pay</a>
+          </li>
+        </ul>
+  </p-dialog>
+  <p-dialog header="Confirmation" [(visible)]="confirmationVisible" [modal]="true" [style]="{'width': '50vw'}" (onHide)="afterConfirmationClose()">
+    <div>
+      <div class="centered-container">
+        <img src="assets/img/confirmation_icon.png" width="200" height="200" >
+      </div>
+      <h3>Booking Details</h3>
+      <p><strong>Movie Title:</strong> {{ confirmationData.movieTitle }} <strong> Seats Selected:</strong> {{ confirmationData.seats.join(', ') }}</p>
+      <p><strong>Total Cost:</strong> ${{ confirmationData.totalCost }}</p>
+      <p>Show Date: {{ confirmationData.showDate | date: 'fullDate' }}</p>
+      <p>Show Time: {{ confirmationData.showTime | date: 'shortTime' }}</p>
+      <button type="button" label="Close" (click)="confirmationVisible=false; afterConfirmationClose()">CLose</button>
+    </div>
+  </p-dialog>
+  <div class="container">
+      <br>
+      <br>
+      <br>
+      <div class="container mt-5">
+          <h1 class="col-22 mb-4">Seats</h1>
+      
+        
+          <div class="card-container" >
+              
+
+                <div class="split-container" style="background-color: rgba(103, 18, 18, 0.808);">
+                  <!-- Left side content -->
+                  <div class="left-side">
+                    <!-- Content for the left side -->
+                    <div class="seat-container">
+                      <div *ngFor="let row of generateSeatMatrix(); let i = index" class="seat-row">
+                        <div *ngFor="let seat of row; let j = index" 
+                            (click)="isSeatBlocked(seat) ? null : toggleSelection(seat)"
+                             [ngClass]="{ 'selected': isSeatSelected(seat), 'blocked': isSeatBlocked(seat) }" 
+                             class="seat" style="padding: 10px; size: 70%; color:black"
+                             >
+                          {{ seat }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div class="right-side" >
+                      <ul class="list" style="float:right; width: 70%;">
+                        <li>
+                          <span class="label">
+                            One Seat Cost:</span>
+                          <span class="value">{{theaterSvc.selected_screen.cost}}</span>
+                        </li>
+                        <li>
+                          <span class="label">
+                            Seats:</span>
+                          <span class="value">{{selectedSeats.join(', ')}}</span>
+                        </li>
+                        <li>
+                          <span class="label">
+                            Seat Cost:</span>
+                          <span class="value"> ${{theaterSvc.selected_screen.cost * selectedSeats.length}}</span>
+                        </li>
+      
+                          <li>
+                            <span class="label">Online Service fee:</span>
+                            <span class="value">${{onlineServicefee}}</span>
+                            <span *ngIf="auth.user?.role=='premium'">(no service fee for premium users)</span>
+                          </li>
+                          <li>
+                            <span class="label">Discount:</span>
+                            <span class="value">${{discountValue | number:'1.2-2'}}</span>
+                          </li>
+                          <li>
+                            <span class="label">Total Cost:</span>
+                            <span class="value">${{totalCost+onlineServicefee}}</span>
+                          </li>
+                          <li>
+                            <a  class="nav-link btn btn-neutral"  target="_blank" (click)="Book()">Book</a>
+                          </li>
+                        </ul>
+                  </div>
+                </div>
+            </div>
+      </div>
+      
+  </div>
+  
+
+</div>
