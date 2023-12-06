@@ -135,5 +135,8 @@ description: Returned all transactions
 */
 router.get('/transactions', auth, ticket.getTransactions);
 
+router.get('/analytics/movie',ticket.analytics);
+router.get('/analytics/location',ticket.analyticsLocation);
+
 
 module.exports = router

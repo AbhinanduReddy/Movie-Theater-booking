@@ -29,7 +29,7 @@ export class discountComponent {
         
     this.http.get('/api/ticket/discount',{headers}).subscribe((res:any)=>{
         this.checkedTuesday = res.discount.tuesday;
-        this.evening = res.discount.sizPM;
+        this.evening = res.discount.sixPM;
         this.val1 = res.percentage;
     })
   }

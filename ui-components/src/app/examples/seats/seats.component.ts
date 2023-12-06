@@ -126,6 +126,8 @@ export class SeatsComponent implements OnInit {
       this.onlineServicefee = 1.5;
     }
     console.log(this.theaterSvc.selected_screen);
+    console.log('discoutn check')
+    console.log(this.tueDiscount,this.isTue,this.isbeforeSix,this.sixPMDiscount)
     if((this.tueDiscount && this.isTue) || (this.isbeforeSix && this.sixPMDiscount)) {
       this.discountValue = this.theaterSvc.selected_screen.cost * this.selectedSeats.length* ( this.discountPercentage/ 100);
     }

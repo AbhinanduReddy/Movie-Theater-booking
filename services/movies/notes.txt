@@ -5,6 +5,7 @@ Nacho$202
 
 
 docker tag team-project-nacho-nacho-api abhinandu/nacho-api
+docker image prune -a
 
 
 docker-compose push

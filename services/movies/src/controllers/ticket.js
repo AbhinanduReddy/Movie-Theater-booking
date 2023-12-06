@@ -116,11 +116,59 @@ async function getTransactions(req, res, next) {
     next(err);
   }
 }
+
+async function analytics(req,res,next){
+  let {days}=req.query;
+  console.log(days);
+  if(days==30){
+    query = {
+      text: "SELECT movie_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '30 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY movie_id ORDER BY movie_id;",
+    };
+  }
+  else if(days==60){
+    query = {
+      text: "SELECT movie_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '60 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY movie_id ORDER BY movie_id;",
+    };
+  }
+  else{
+    query = {
+      text: "SELECT movie_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '90 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY movie_id ORDER BY movie_id;",
+    };
+  }
+  console.log(query)
+  const result = await db.query(query);
+  res.json(result.rows);
+}
+
+async function analyticsLocation(req,res,next){
+  let {days}=req.query;
+  console.log(days);
+  if(days==30){
+    query = {
+      text: "SELECT location_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '30 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY location_id ORDER BY location_id;",
+    };
+  }
+  else if(days==60){
+    query = {
+      text: "SELECT location_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '60 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY location_id ORDER BY location_id;",
+    };
+  }
+  else{
+    query = {
+      text: "SELECT location_id, SUM(total_tickets) as total_tickets, SUM(total_seats) as total_seats FROM ( SELECT th.location_id, t.movie_id, COUNT(*) as total_tickets, SUM(ARRAY_LENGTH(t.seats, 1)) as total_seats FROM ticket t JOIN theater th ON t.theater_id = th.theater_id WHERE t.show_time >= CURRENT_DATE - INTERVAL '90 days' GROUP BY th.location_id, t.movie_id ) AS temp GROUP BY location_id ORDER BY location_id;",
+    };
+  }
+  console.log(query)
+  const result = await db.query(query);
+  res.json(result.rows);
+}
 module.exports = {
  book,
  del,
  updateBooking,
  discountUpdate,
  getDiscount,
- getTransactions
+ getTransactions,
+ analytics,
+ analyticsLocation
 };

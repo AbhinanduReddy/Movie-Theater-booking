@@ -27,11 +27,16 @@ import {MultiSelectModule} from 'primeng/multiselect';
 import { assignTheaterComponent } from './assignTheater/assignTheater.component';
 import { discountComponent } from './discount/discount.component';
 import {SliderModule} from 'primeng/slider';
+import {ChartModule} from 'primeng/chart';
+import {SelectButtonModule} from 'primeng/selectbutton';
 
 import { MegaMenuModule } from 'primeng/megamenu';
+import { analyticsComponent } from './analytics/analytics.component';
 
 @NgModule({
     imports: [
+        ChartModule,
+        SelectButtonModule,
         SliderModule,
         MultiSelectModule,
         DropdownModule,
@@ -53,7 +58,6 @@ import { MegaMenuModule } from 'primeng/megamenu';
         InputTextModule,
         CalendarModule,
         InputTextModule,
-        
         AgmCoreModule.forRoot({
             apiKey: 'YOUR_KEY_HERE'
         })
@@ -68,7 +72,8 @@ import { MegaMenuModule } from 'primeng/megamenu';
         SeatsComponent,
         theaterOperationComponent,
         assignTheaterComponent,
-        discountComponent
+        discountComponent,
+        analyticsComponent        
     ]
 })
 export class ExamplesModule { }
