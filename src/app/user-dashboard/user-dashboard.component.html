@@ -1,0 +1,33 @@
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <p-card title="Sales">
+          <p-chart type="line" [data]="dataForLineChart"></p-chart>
+        </p-card>
+      </div>
+      <div class="col-md-6">
+        <p-card title="24 Hours Performance">
+          <p-chart type="bar" [data]="dataForBarChart"></p-chart>
+        </p-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <p-card title="Recent Appointments">
+          <p-table [value]="appointments"></p-table>
+        </p-card>
+      </div>
+      <div class="col-md-4">
+        <p-card title="Transactions">
+          <!-- Your transactions table here -->
+        </p-card>
+      </div>
+      <div class="col-md-4">
+        <p-card title="Pie Chart">
+          <p-chart type="pie" [data]="dataForPieChart"></p-chart>
+        </p-card>
+      </div>
+    </div>
+  </div>
+  

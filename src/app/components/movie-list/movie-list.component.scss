@@ -1,0 +1,51 @@
+/* Card layout styles */
+.card {
+  overflow: hidden;
+  margin: auto;
+  background-color: rgb(51, 50, 50);
+  transition: transform .3s; /* Animation for hover effect */
+}
+
+.card-img-top {
+  width: 100%;
+  object-fit: scale-down;
+  height: 300px;
+  transition: transform .3s, filter .3s; /* Smooth transition for image effects */
+}
+
+.card:hover {
+  transform: scale(1.03); /* Slightly scale up cards on hover */
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.1); /* Slightly scale up the image on hover */
+  filter: brightness(80%); /* Dim the image on hover */
+}
+
+.card-body {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  color: white; /* Text color */
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(100%);
+  transition: transform .3s; /* Smooth transition for slide effect */
+}
+
+.card:hover .card-body {
+  transform: translateY(0); /* Slide up card body on hover */
+}
+
+.card-title, .card-text, .text-muted {
+  margin: 0.5rem;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .card-img-top {
+    height: auto; /* Adjust height automatically for smaller screens */
+  }
+}
+.card-footer{
+  color: white; 
+}

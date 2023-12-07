@@ -1,0 +1,79 @@
+
+<style>
+  .section-movielist {
+    position: relative;
+    color: white; 
+ 
+}
+  .custom-carousel {
+    margin-top: 35px; 
+    width: 100%;
+    margin-bottom: 0px;
+}
+    .custom-carousel img {
+        width: 100%;
+        height: 700px;
+        position: relative;
+       
+    }
+  .page-header {
+    background-image: linear-gradient(to bottom, rgba(203, 37, 37, 0.76), black);
+    min-height: 500px; 
+  }
+  .page-header-image {
+    background-position: top center;
+    height: 900px; 
+  }
+ 
+</style>
+
+<div class="page-header clear-filter" >
+ 
+  <div class="page-header-image rellax-header" data-rellax-speed="-7" style="background-image: url('assets/img/bg_img.jpeg'); background-size: cover; background-position: top center; min-height: 700px;" ></div>
+    <div class="container col-10 md-100" >
+      <br/>
+      <br/>
+      <br/>
+      <p><strong>Upcoming Movies</strong></p>
+      <ngb-carousel class="custom-carousel">  
+        <ng-template ngbSlide *ngFor="let movie of movies">
+          <div class="d-block">
+             <img class="d-block img-fluid custom-width" [src]="movie.image_url" alt="{{ movie.movie_name }}" style="filter: brightness(0.58);">
+                <div class="carousel-caption d-none d-md-block text-warning">
+                 <h5 class="display-4"><b>{{ movie.movie_name }}</b></h5>
+                 <p class="lead"><b>{{ movie.description.description }}</b></p>
+                 <div>
+                 <!-- <a [href]="movie.buttonLink" class="btn btn-primary">{{ movie.buttonText }}</a> -->
+                 <!-- <a class="btn btn-secondary">Upcoming Movies</a> -->
+                 </div>
+                </div>
+          </div> 
+        </ng-template>
+      </ngb-carousel>
+  </div>
+    
+  <div class="section section-movielist"  data-background-color="black">
+    <div class="space-40"></div>
+      <div class="container text-center">
+        <app-zip-code-search></app-zip-code-search>
+          <div class="row justify-content-start align-items-center">
+            <div class="col-12 md-12">
+              <app-movie-list></app-movie-list>
+            </div>
+          </div>
+      </div>
+  </div>
+     <!-- <div class="section-showdates" data-background-color="black"  >
+        <div class="space-50"></div>
+        <div class="container text-center">
+          <div class="row justify-content-start align-items-center">
+            <div class="col-12 md-12">
+              <app-showdates></app-showdates>
+            </div>
+        </div>
+    </div>
+  </div>-->
+</div>
+
+
+
